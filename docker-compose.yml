@@ -1,0 +1,28 @@
+version: '3'
+
+services:
+    mock:
+        image: yellowblackandwhite/alpine-drakov
+        volumes:
+            - ./blueprint.apib:/drakov/apiary.apib
+        command: [
+            'drakov',
+            '-f /drakov/apiary.apib',
+            '-p 5000',
+            '--watch'
+        ]
+        ports:
+            - "5000:5000"
+    docs:
+        image: apiaryio/client
+        volumes:
+            - ./blueprint.apib:/app/apiary.apib
+        command: [
+            'preview',
+            '--server',
+            '--host=0.0.0.0',
+            '--port=4000',
+            '--path=/app/apiary.apib'
+        ]
+        ports:
+            - "4000:4000"
